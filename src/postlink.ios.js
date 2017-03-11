@@ -36,15 +36,17 @@ function mountFrameworks(project, config) {
     });
 }
 
-function mountParams(plist, config) {
-  return Promise.all(_.map(config.params, (param) => {
-    const { name, message } = param;
+function mountParams(plist, params) {
+  const param = _.pullAt(params, 0)[0];
+  const { name, message } = param;
 
-    return inquirer.prompt({
+  return inquirer
+    .prompt({
       type: 'input',
       name: 'value',
       message,
-    }).then((answer) => {
+    })
+    .then((answer) => {
       const handler = _.find(['linkIos', 'handlerIos', 'link', 'handler'], value => _.has(param, value));
       if (handler) return param[handler](plist, answer);
 
@@ -53,8 +55,8 @@ function mountParams(plist, config) {
       }
 
       return _.set(plist, name, answer.value || `${name} in here`);
-    });
-  }));
+    })
+    .then(() => (params.length ? mountParams(plist, params) : false));
 }
 
 module.exports = function postlink(pbxprojPath, config) {
@@ -65,7 +67,7 @@ module.exports = function postlink(pbxprojPath, config) {
 
   return Promise.resolve()
     .then(() => (config.framework ? mountFrameworks(pbxproj, config) : false))
-    .then(() => (config.params ? mountParams(plist, config) : false))
+    .then(() => (config.params ? mountParams(plist, _.clone(config.params)) : false))
     .then(() => ({
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),

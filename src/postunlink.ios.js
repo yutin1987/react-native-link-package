@@ -32,8 +32,8 @@ function mountFrameworks(project, config) {
     });
 }
 
-function mountParams(plist, config) {
-  _.forEach(config.params, (param) => {
+function mountParams(plist, params) {
+  _.forEach(params, (param) => {
     const { name } = param;
 
     const handler = _.find(['unlinkIos', 'handlerIos', 'unlink', 'handler'], value => _.has(param, value));
@@ -51,7 +51,7 @@ module.exports = function postlink(pbxprojPath, config) {
 
   return Promise.resolve()
     .then(() => (config.framework ? mountFrameworks(pbxproj, config) : false))
-    .then(() => (config.params ? mountParams(plist, config) : false))
+    .then(() => (config.params ? mountParams(plist, _.clone(config.params)) : false))
     .then(() => ({
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),

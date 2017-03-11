@@ -66,15 +66,17 @@ function mountActivities(manifest, config) {
   });
 }
 
-function mountParams(manifest, config) {
-  return Promise.all(_.map(config.params, (param) => {
-    const { name, message } = param;
+function mountParams(manifest, params) {
+  const param = _.pullAt(params, 0)[0];
+  const { name, message } = param;
 
-    return inquirer.prompt({
+  return inquirer
+    .prompt({
       type: 'input',
       name: 'value',
       message,
-    }).then((answer) => {
+    })
+    .then((answer) => {
       const handler = _.find(['linkAndroid', 'handlerAndroid', 'link', 'handler'], value => _.has(param, value));
       if (handler) return param[handler](manifest, answer);
 
@@ -88,8 +90,8 @@ function mountParams(manifest, config) {
         .prepend(manifest('<meta-data>')
         .attr('android:name', name)
         .attr('android:value', answer.value || `${name}-in-here`));
-    });
-  }));
+    })
+    .then(() => (params.length ? mountParams(manifest, params) : false));
 }
 
 module.exports = function postlink(manifestPath, config) {
@@ -104,7 +106,7 @@ module.exports = function postlink(manifestPath, config) {
     .then(() => (config.compiles ? mountCompiles(gradle, config) : false))
     .then(() => (config.permissions ? mountPermissions(manifest, config) : false))
     .then(() => (config.activities ? mountActivities(manifest, config) : false))
-    .then(() => (config.params ? mountParams(manifest, config) : false))
+    .then(() => (config.params ? mountParams(manifest, _.clone(config.params)) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),

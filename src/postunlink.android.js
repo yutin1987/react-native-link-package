@@ -25,9 +25,9 @@ function mountActivities(manifest, config) {
   });
 }
 
-function mountParams(manifest, config) {
+function mountParams(manifest, params) {
   const meta = manifest('meta-data');
-  _.forEach(config.params, (param) => {
+  _.forEach(params, (param) => {
     const { name } = param;
 
     const handler = _.find(['unlinkAndroid', 'handlerAndroid', 'unlink', 'handler'], value => _.has(param, value));
@@ -51,7 +51,7 @@ module.exports = function postlink(manifestPath, config) {
     .then(() => (config.compiles ? mountCompiles(gradle, config) : false))
     .then(() => (config.permissions ? mountPermissions(manifest, config) : false))
     .then(() => (config.activities ? mountActivities(manifest, config) : false))
-    .then(() => (config.params ? mountParams(manifest, config) : false))
+    .then(() => (config.params ? mountParams(manifest, _.clone(config.params)) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),
