@@ -1,12 +1,11 @@
 const _ = require('lodash');
-const glob = require('glob');
 const postunlink = require('../postunlink.android');
 
-const option = { ignore: ['node_modules/**', '**/build/**', 'link_sample/**'], realpath: true };
+const path = 'unlink_sample/android/app/src/main/AndroidManifest.xml';
 
 describe('postunlink android', () => {
   it('mount compiles', () => (
-    postunlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       compiles: ['com.facebook.android:account-kit-sdk:4.+'],
     })
@@ -17,7 +16,7 @@ describe('postunlink android', () => {
   ));
 
   it('mount permissions', () => (
-    postunlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       permissions: ['RECEIVE_SMS', 'SYSTEM_ALERT_WINDOW'],
     })
@@ -29,7 +28,7 @@ describe('postunlink android', () => {
   ));
 
   it('mount activity', () => (
-    postunlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       activities: {
         'com.facebook.AppActivity': {
@@ -45,7 +44,7 @@ describe('postunlink android', () => {
   ));
 
   it('mount params', () => (
-    postunlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',
@@ -59,7 +58,7 @@ describe('postunlink android', () => {
   ));
 
   it('mount params when setup handler', () => (
-    postunlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',

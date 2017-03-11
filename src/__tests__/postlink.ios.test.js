@@ -1,21 +1,20 @@
-
 jest.mock('inquirer');
 
 const _ = require('lodash');
 const xcode = require('xcode');
-const glob = require('glob');
 const inquirer = require('inquirer');
 const postlink = require('../postlink.ios');
 
-const option = { ignore: ['node_modules/**', '**/build/**', 'unlink_sample/**'], realpath: true };
 const generateUuid = xcode.project.prototype.generateUuid;
+
+const path = 'link_sample/ios/sample.xcodeproj/project.pbxproj';
 
 describe('postlink ios', () => {
   it('mount framework', () => {
     generateUuid.mockReturnValueOnce('E77F019A5F934FC8BADCD2DA');
     generateUuid.mockReturnValueOnce('7EC55606029D4633B56B87AB');
     generateUuid.mockReturnValueOnce('E733E413F91D4CBDB8C24C76');
-    return postlink(glob.sync('**/*.pbxproj', option)[0], {
+    return postlink(path, {
       packageName: 'rn-package',
       framework: {
         path: 'ios/Frameworks/',
@@ -34,7 +33,7 @@ describe('postlink ios', () => {
     const value = '594f5212-3d66-45d9-a992-ad94263cf318';
     inquirer.prompt.mockReturnValueOnce(Promise.resolve({ value }));
 
-    return postlink(glob.sync('**/*.pbxproj', option)[0], {
+    return postlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',
@@ -52,7 +51,7 @@ describe('postlink ios', () => {
     const value = '594f5212-3d66-45d9-a992-ad94263cf318';
     inquirer.prompt.mockReturnValueOnce(Promise.resolve({ value }));
 
-    return postlink(glob.sync('**/*.pbxproj', option)[0], {
+    return postlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',

@@ -1,14 +1,13 @@
 jest.mock('inquirer');
 
 const _ = require('lodash');
-const glob = require('glob');
 const postunlink = require('../postunlink.ios');
 
-const option = { ignore: ['node_modules/**', '**/build/**', 'link_sample/**'], realpath: true };
+const path = 'unlink_sample/ios/sample.xcodeproj/project.pbxproj';
 
 describe('postunlink ios', () => {
   it('mount framework', () => (
-    postunlink(glob.sync('**/*.pbxproj', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       framework: {
         path: 'ios/Frameworks/',
@@ -25,7 +24,7 @@ describe('postunlink ios', () => {
   ));
 
   it('mount params', () => (
-    postunlink(glob.sync('**/*.pbxproj', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',
@@ -39,7 +38,7 @@ describe('postunlink ios', () => {
   ));
 
   it('mount params when setup handler', () => (
-    postunlink(glob.sync('**/*.pbxproj', option)[0], {
+    postunlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',

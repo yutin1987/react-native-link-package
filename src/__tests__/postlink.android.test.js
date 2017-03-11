@@ -1,14 +1,13 @@
 jest.mock('inquirer');
 
-const glob = require('glob');
 const inquirer = require('inquirer');
 const postlink = require('../postlink.android');
 
-const option = { ignore: ['node_modules/**', '**/build/**', 'unlink_sample/**'], realpath: true };
+const path = 'link_sample/android/app/src/main/AndroidManifest.xml';
 
 describe('postlink android', () => {
   it('mount compiles', () => (
-    postlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postlink(path, {
       packageName: 'rn-package',
       compiles: ['com.facebook.android:account-kit-sdk:4.+'],
     })
@@ -19,7 +18,7 @@ describe('postlink android', () => {
   ));
 
   it('mount permissions', () => (
-    postlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postlink(path, {
       packageName: 'rn-package',
       permissions: ['RECEIVE_SMS', 'SYSTEM_ALERT_WINDOW'],
     })
@@ -31,7 +30,7 @@ describe('postlink android', () => {
   ));
 
   it('mount activity', () => (
-    postlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    postlink(path, {
       packageName: 'rn-package',
       activities: {
         'com.facebook.accountkit.ui.AccountKitEmailRedirectActivity': {
@@ -57,7 +56,7 @@ describe('postlink android', () => {
     const value = '594f5212-3d66-45d9-a992-ad94263cf318';
     inquirer.prompt.mockReturnValueOnce(Promise.resolve({ value }));
 
-    return postlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    return postlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',
@@ -75,7 +74,7 @@ describe('postlink android', () => {
     const value = '594f5212-3d66-45d9-a992-ad94263cf318';
     inquirer.prompt.mockReturnValueOnce(Promise.resolve({ value }));
 
-    return postlink(glob.sync('**/AndroidManifest.xml', option)[0], {
+    return postlink(path, {
       packageName: 'rn-package',
       params: [{
         name: 'APP_KEY',
