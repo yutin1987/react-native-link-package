@@ -68,16 +68,15 @@ function mountActivities(manifest, config) {
 
 function mountParams(manifest, config) {
   return Promise.all(_.map(config.params, (param) => {
-    const { name, message, handler } = param;
+    const { name, message } = param;
 
     return inquirer.prompt({
       type: 'input',
       name: 'value',
       message,
     }).then((answer) => {
-      if (handler) {
-        return handler(manifest, answer);
-      }
+      const handler = _.find(['linkAndroid', 'handlerAndroid', 'link', 'handler'], value => _.has(param, value));
+      if (handler) return param[handler](manifest, answer);
 
       const dupe = _.find(manifest('meta-data'), { attribs: { 'android:name': name } });
 

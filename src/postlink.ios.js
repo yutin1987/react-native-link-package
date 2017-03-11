@@ -38,16 +38,15 @@ function mountFrameworks(project, config) {
 
 function mountParams(plist, config) {
   return Promise.all(_.map(config.params, (param) => {
-    const { name, message, handler } = param;
+    const { name, message } = param;
 
     return inquirer.prompt({
       type: 'input',
       name: 'value',
       message,
     }).then((answer) => {
-      if (handler) {
-        return handler(plist, answer);
-      }
+      const handler = _.find(['linkIos', 'handlerIos', 'link', 'handler'], value => _.has(param, value));
+      if (handler) return param[handler](plist, answer);
 
       if (plist[name]) {
         return console.log(`"${name}" already specified in the plist file.`);

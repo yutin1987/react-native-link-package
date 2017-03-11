@@ -33,10 +33,11 @@ function mountFrameworks(project, config) {
 }
 
 function mountParams(plist, config) {
-  _.forEach(config.params, ({ name, handler }) => {
-    if (handler) {
-      return handler(plist);
-    }
+  _.forEach(config.params, (param) => {
+    const { name } = param;
+
+    const handler = _.find(['unlinkIos', 'handlerIos', 'unlink', 'handler'], value => _.has(param, value));
+    if (handler) return param[handler](plist);
 
     return _.unset(plist, name);
   });

@@ -30,9 +30,9 @@ ex: [package.json](https://github.com/yutin1987/react-native-bridge-firebase/blo
 `postlink.js` or `postunlink.js`
 
 ```
-const link = require('react-native-link-package');
+const rnlp = require('react-native-link-package');
 
-link.postlink({
+rnlp.link({
   packageName: '',
   framework: {
     path: '',
@@ -56,6 +56,8 @@ link.postlink({
     params: [{
       name: 'APP_KEY',
       message: 'What\'s your app key for ios ?',
+      link: () => {},
+      unlink: () => {},
     }],
   }
 });

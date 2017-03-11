@@ -36,16 +36,20 @@ const option = { ignore: ['node_modules/**', '**/build/**'], realpath: true };
 // }
 
 module.expect = {
-  postlink: (configs) => {
-    const android = _.get(configs, 'android', {});
-    postlinkAndroid(glob.sync('**/AndroidManifest.xml', option)[0], { ...configs, ...android });
-    const ios = _.get(configs, 'ios', {});
-    postlinkIos(glob.sync('**/*.pbxproj', option)[0], { ...configs, ...ios });
+  link: (configs) => {
+    postlinkAndroid(
+      glob.sync('**/AndroidManifest.xml', option)[0],
+      _.merge(configs, _.get(configs, 'android', {})));
+    postlinkIos(
+      glob.sync('**/*.pbxproj', option)[0],
+      _.merge(configs, _.get(configs, 'ios', {})));
   },
-  postunlink: (configs) => {
-    const android = _.get(configs, 'android', {});
-    postunlinkAndroid(glob.sync('**/AndroidManifest.xml', option)[0], { ...configs, ...android });
-    const ios = _.get(configs, 'ios', {});
-    postunlinkIos(glob.sync('**/*.pbxproj', option)[0], { ...configs, ...ios });
+  unlink: (configs) => {
+    postunlinkAndroid(
+      glob.sync('**/AndroidManifest.xml', option)[0],
+      _.merge(configs, _.get(configs, 'android', {})));
+    postunlinkIos(
+      glob.sync('**/*.pbxproj', option)[0],
+      _.merge(configs, _.get(configs, 'ios', {})));
   },
 };

@@ -27,10 +27,11 @@ function mountActivities(manifest, config) {
 
 function mountParams(manifest, config) {
   const meta = manifest('meta-data');
-  _.forEach(config.params, ({ name, handler }) => {
-    if (handler) {
-      return handler(manifest);
-    }
+  _.forEach(config.params, (param) => {
+    const { name } = param;
+
+    const handler = _.find(['unlinkAndroid', 'handlerAndroid', 'unlink', 'handler'], value => _.has(param, value));
+    if (handler) return param[handler](manifest);
 
     const dupe = _.find(meta, { attribs: { 'android:name': name } });
     if (dupe) manifest(dupe).remove();
