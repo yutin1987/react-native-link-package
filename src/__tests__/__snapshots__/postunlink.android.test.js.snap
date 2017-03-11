@@ -1,9 +1,12 @@
-exports[`postlink android mount activity 1`] = `
+exports[`postunlink android mount activity 1`] = `
 "<manifest 
     xmlns:android=\"http://schemas.android.com/apk/res/android\"
     package=\"com.sample\"
     android:versionCode=\"1\"
     android:versionName=\"1.0\">
+    <meta-data
+        android:name=\"APP_KEY\"
+        android:value=\"594f5212-3d66-45d9-a992-ad94263cf318\" />
 
     <uses-permission android:name=\"android.permission.INTERNET\" />
     <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
@@ -29,25 +32,12 @@ exports[`postlink android mount activity 1`] = `
             </intent-filter>
         </activity>
         <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
-        <activity android:name=\"com.facebook.AppActivity\">
-            <intent-filter>
-                <action android:name=\"android.intent.action.VIEW\" />
-                <category android:name=\"android.intent.category.BROWSABLE\" />
-            </intent-filter>
-        </activity>
-        <activity android:name=\"com.facebook.accountkit.ui.AccountKitEmailRedirectActivity\">
-            <intent-filter>
-                <action android:name=\"android.intent.action.VIEW\" />
-                <category android:name=\"android.intent.category.DEFAULT\" />
-                <category android:name=\"android.intent.category.BROWSABLE\" />
-            </intent-filter>
-        </activity>
     </application>
 </manifest>
 "
 `;
 
-exports[`postlink android mount compiles 1`] = `
+exports[`postunlink android mount compiles 1`] = `
 "apply plugin: \"com.android.application\"
 
 import com.android.build.OutputFile
@@ -179,7 +169,6 @@ dependencies {
     compile fileTree(dir: \"libs\", include: [\"*.jar\"])
     compile \"com.android.support:appcompat-v7:23.0.1\"
     compile \"com.facebook.react:react-native:+\"  // From node_modules
-    compile \"com.facebook.android:account-kit-sdk:4.+\"
 }
 
 // Run this once to be able to run the application with BUCK
@@ -191,7 +180,50 @@ task copyDownloadableDepsToLibs(type: Copy) {
 "
 `;
 
-exports[`postlink android mount params 1`] = `
+exports[`postunlink android mount params 1`] = `
+"<manifest 
+    xmlns:android=\"http://schemas.android.com/apk/res/android\"
+    package=\"com.sample\"
+    android:versionCode=\"1\"
+    android:versionName=\"1.0\">
+
+    <uses-permission android:name=\"android.permission.INTERNET\" />
+    <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
+
+    <uses-sdk
+        android:minSdkVersion=\"16\"
+        android:targetSdkVersion=\"22\" />
+
+    <application
+        android:name=\".MainApplication\"
+        android:allowBackup=\"true\"
+        android:label=\"@string/app_name\"
+        android:icon=\"@mipmap/ic_launcher\"
+        android:theme=\"@style/AppTheme\">
+        <activity
+            android:name=\".MainActivity\"
+            android:label=\"@string/app_name\"
+            android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize\"
+            android:windowSoftInputMode=\"adjustResize\">
+            <intent-filter>
+                <action android:name=\"android.intent.action.MAIN\" />
+                <category android:name=\"android.intent.category.LAUNCHER\" />
+            </intent-filter>
+        </activity>
+        <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
+        <activity android:name=\"com.facebook.AppActivity\">
+            <intent-filter>
+                <action android:name=\"android.intent.action.VIEW\" />
+                <category android:name=\"android.intent.category.BROWSABLE\" />
+                <data android:scheme=\"ak12345\" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+"
+`;
+
+exports[`postunlink android mount params when setup handler 1`] = `
 "<manifest 
     xmlns:android=\"http://schemas.android.com/apk/res/android\"
     package=\"com.sample\"
@@ -236,59 +268,17 @@ exports[`postlink android mount params 1`] = `
 "
 `;
 
-exports[`postlink android mount params when setup handler 1`] = `
+exports[`postunlink android mount permissions 1`] = `
 "<manifest 
     xmlns:android=\"http://schemas.android.com/apk/res/android\"
     package=\"com.sample\"
     android:versionCode=\"1\"
     android:versionName=\"1.0\">
+    <meta-data
+        android:name=\"APP_KEY\"
+        android:value=\"594f5212-3d66-45d9-a992-ad94263cf318\" />
 
     <uses-permission android:name=\"android.permission.INTERNET\" />
-    <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
-
-    <uses-sdk
-        android:minSdkVersion=\"16\"
-        android:targetSdkVersion=\"22\" />
-
-    <application
-        android:name=\".MainApplication\"
-        android:allowBackup=\"true\"
-        android:label=\"@string/app_name\"
-        android:icon=\"@mipmap/ic_launcher\"
-        android:theme=\"@style/AppTheme\">
-        <activity
-            android:name=\".MainActivity\"
-            android:label=\"@string/app_name\"
-            android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize\"
-            android:windowSoftInputMode=\"adjustResize\">
-            <intent-filter>
-                <action android:name=\"android.intent.action.MAIN\" />
-                <category android:name=\"android.intent.category.LAUNCHER\" />
-                <data android:scheme=\"ak594f5212-3d66-45d9-a992-ad94263cf318\" />
-            </intent-filter>
-        </activity>
-        <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
-        <activity android:name=\"com.facebook.AppActivity\">
-            <intent-filter>
-                <action android:name=\"android.intent.action.VIEW\" />
-                <category android:name=\"android.intent.category.BROWSABLE\" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>
-"
-`;
-
-exports[`postlink android mount permissions 1`] = `
-"<manifest 
-    xmlns:android=\"http://schemas.android.com/apk/res/android\"
-    package=\"com.sample\"
-    android:versionCode=\"1\"
-    android:versionName=\"1.0\">
-
-    <uses-permission android:name=\"android.permission.INTERNET\" />
-    <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
-    <uses-permission android:name=\"android.permission.RECEIVE_SMS\" />
 
     <uses-sdk
         android:minSdkVersion=\"16\"
@@ -315,6 +305,7 @@ exports[`postlink android mount permissions 1`] = `
             <intent-filter>
                 <action android:name=\"android.intent.action.VIEW\" />
                 <category android:name=\"android.intent.category.BROWSABLE\" />
+                <data android:scheme=\"ak12345\" />
             </intent-filter>
         </activity>
     </application>

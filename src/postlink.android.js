@@ -54,7 +54,7 @@ function mountActivities(manifest, config) {
 
       if (obj.category) {
         _.forEach(obj.category, (categoryName) => {
-          const dupe = _.find(intent.find('action'), {
+          const dupe = _.find(intent.find('category'), {
             attribs: { 'android:name': `android.intent.category.${categoryName}` },
           });
           if (!dupe) {
@@ -67,8 +67,7 @@ function mountActivities(manifest, config) {
 }
 
 function mountParams(manifest, config) {
-  const { params } = config;
-  return Promise.all(params.map((param) => {
+  return Promise.all(_.map(config.params, (param) => {
     const { name, message, handler } = param;
 
     return inquirer.prompt({

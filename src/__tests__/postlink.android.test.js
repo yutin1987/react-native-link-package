@@ -4,7 +4,7 @@ const glob = require('glob');
 const inquirer = require('inquirer');
 const postlink = require('../postlink.android');
 
-const option = { ignore: ['node_modules/**', '**/build/**'], realpath: true };
+const option = { ignore: ['node_modules/**', '**/build/**', 'unlink_sample/**'], realpath: true };
 
 describe('postlink android', () => {
   it('mount compiles', () => (

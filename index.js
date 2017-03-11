@@ -2,6 +2,8 @@ const _ = require('lodash');
 const glob = require('glob');
 const postlinkAndroid = require('./src/postlink.android');
 const postlinkIos = require('./src/postlink.ios');
+const postunlinkAndroid = require('./src/postunlink.android');
+const postunlinkIos = require('./src/postunlink.ios');
 
 const option = { ignore: ['node_modules/**', '**/build/**'], realpath: true };
 
@@ -40,6 +42,10 @@ module.expect = {
     const ios = _.get(configs, 'ios', {});
     postlinkIos(glob.sync('**/*.pbxproj', option)[0], { ...configs, ...ios });
   },
-  postunlink: () => {
+  postunlink: (configs) => {
+    const android = _.get(configs, 'android', {});
+    postunlinkAndroid(glob.sync('**/AndroidManifest.xml', option)[0], { ...configs, ...android });
+    const ios = _.get(configs, 'ios', {});
+    postunlinkIos(glob.sync('**/*.pbxproj', option)[0], { ...configs, ...ios });
   },
 };

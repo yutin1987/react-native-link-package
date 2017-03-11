@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const xcode = require('xcode');
-const inquirer = require('inquirer');
 const path = require('path');
 const plistParser = require('plist');
 const fs = require('fs');
@@ -18,44 +17,29 @@ function mountFrameworks(project, config) {
   }
 
   _.forEach(framework.files, (file) => {
-    project.addFramework(`${frameworkPath}/${file}`, { customFramework: true });
+    project.removeFramework(`${frameworkPath}/${file}`, { customFramework: true });
   });
-
-  const INHERITED = '"$(inherited)"';
 
   _.forEach(
     _.filter(project.pbxXCBuildConfigurationSection(), (obj, key) => key.indexOf('_comment') === -1),
     ({ buildSettings }) => {
       if (buildSettings.PRODUCT_NAME) {
-        let searchPaths = _.get(buildSettings, 'FRAMEWORK_SEARCH_PATHS', [INHERITED]);
-        if (searchPaths === INHERITED) searchPaths = [INHERITED];
-        searchPaths.push(`"\\"${frameworkPath}\\""`);
-
-        _.set(buildSettings, 'FRAMEWORK_SEARCH_PATHS', _.uniq(searchPaths));
+        const searchPaths = _.get(buildSettings, 'FRAMEWORK_SEARCH_PATHS');
+        if (searchPaths && _.isArray(searchPaths)) {
+          _.set(buildSettings, 'FRAMEWORK_SEARCH_PATHS', _.pull(searchPaths, `"\\"${frameworkPath}\\""`));
+        }
       }
     });
 }
 
 function mountParams(plist, config) {
-  return Promise.all(_.map(config.params, (param) => {
-    const { name, message, handler } = param;
+  _.forEach(config.params, ({ name, handler }) => {
+    if (handler) {
+      return handler(plist);
+    }
 
-    return inquirer.prompt({
-      type: 'input',
-      name: 'value',
-      message,
-    }).then((answer) => {
-      if (handler) {
-        return handler(plist, answer);
-      }
-
-      if (plist[name]) {
-        return console.log(`"${name}" already specified in the plist file.`);
-      }
-
-      return _.set(plist, name, answer.value || `${name} in here`);
-    });
-  }));
+    return _.unset(plist, name);
+  });
 }
 
 module.exports = function postlink(pbxprojPath, config) {

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "easy to link/unlink your package",
   "main": "index.js",
-  "engines" : {
-    "node" : ">=4"
+  "engines": {
+    "node": ">=4"
   },
   "dependencies": {
     "android-pretty-manifest": "^1.0.1",
@@ -31,9 +31,14 @@
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/sample/"
+      "/link_sample/",
+      "/unlink_sample/"
     ]
   },
+  "files": [
+    "/src/",
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yutin1987/react-native-link-package.git"
