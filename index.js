@@ -37,19 +37,23 @@ const option = { ignore: ['node_modules/**', '**/build/**'], realpath: true };
 
 module.exports = {
   link: (configs) => {
-    postlinkAndroid(
-      glob.sync('**/AndroidManifest.xml', option)[0],
-      _.merge(configs, _.get(configs, 'android', {})));
-    postlinkIos(
-      glob.sync('**/*.pbxproj', option)[0],
-      _.merge(configs, _.get(configs, 'ios', {})));
+    Promise
+      .resolve()
+      .then(() => postlinkAndroid(
+        glob.sync('**/AndroidManifest.xml', option)[0],
+        _.assign(configs, _.get(configs, 'android', {}))))
+      .then(() => postlinkIos(
+        glob.sync('**/*.pbxproj', option)[0],
+        _.assign(configs, _.get(configs, 'ios', {}))));
   },
   unlink: (configs) => {
-    postunlinkAndroid(
-      glob.sync('**/AndroidManifest.xml', option)[0],
-      _.merge(configs, _.get(configs, 'android', {})));
-    postunlinkIos(
-      glob.sync('**/*.pbxproj', option)[0],
-      _.merge(configs, _.get(configs, 'ios', {})));
+    Promise
+      .resolve()
+      .then(() => postunlinkAndroid(
+        glob.sync('**/AndroidManifest.xml', option)[0],
+        _.assign(configs, _.get(configs, 'android', {}))))
+      .then(() => postunlinkIos(
+        glob.sync('**/*.pbxproj', option)[0],
+        _.assign(configs, _.get(configs, 'ios', {}))));
   },
 };
