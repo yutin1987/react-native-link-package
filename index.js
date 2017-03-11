@@ -35,7 +35,7 @@ const option = { ignore: ['node_modules/**', '**/build/**'], realpath: true };
 //   }
 // }
 
-module.expect = {
+module.exports = {
   link: (configs) => {
     postlinkAndroid(
       glob.sync('**/AndroidManifest.xml', option)[0],
