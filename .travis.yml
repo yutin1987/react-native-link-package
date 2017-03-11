@@ -1,3 +1,8 @@
 language: node_js
+
 node_js:
-  - '6'
+  - '6.9'
+
+after_success:
+  - npm install -g codecov
+  - codecov --token=0997c38e-f195-4322-9f4c-2724f4a512b6
