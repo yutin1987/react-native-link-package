@@ -1,44 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`postunlink android mount activity 1`] = `
 "<manifest 
-    xmlns:android=\"http://schemas.android.com/apk/res/android\"
-    package=\"com.sample\"
-    android:versionCode=\"1\"
-    android:versionName=\"1.0\">
+    xmlns:android=\\"http://schemas.android.com/apk/res/android\\"
+    package=\\"com.sample\\"
+    android:versionCode=\\"1\\"
+    android:versionName=\\"1.0\\">
     <meta-data
-        android:name=\"APP_KEY\"
-        android:value=\"594f5212-3d66-45d9-a992-ad94263cf318\" />
+        android:name=\\"APP_KEY\\"
+        android:value=\\"594f5212-3d66-45d9-a992-ad94263cf318\\" />
 
-    <uses-permission android:name=\"android.permission.INTERNET\" />
-    <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
+    <uses-permission android:name=\\"android.permission.INTERNET\\" />
+    <uses-permission android:name=\\"android.permission.SYSTEM_ALERT_WINDOW\\" />
 
     <uses-sdk
-        android:minSdkVersion=\"16\"
-        android:targetSdkVersion=\"22\" />
+        android:minSdkVersion=\\"16\\"
+        android:targetSdkVersion=\\"22\\" />
 
     <application
-        android:name=\".MainApplication\"
-        android:allowBackup=\"true\"
-        android:label=\"@string/app_name\"
-        android:icon=\"@mipmap/ic_launcher\"
-        android:theme=\"@style/AppTheme\">
+        android:name=\\".MainApplication\\"
+        android:allowBackup=\\"true\\"
+        android:label=\\"@string/app_name\\"
+        android:icon=\\"@mipmap/ic_launcher\\"
+        android:theme=\\"@style/AppTheme\\">
         <activity
-            android:name=\".MainActivity\"
-            android:label=\"@string/app_name\"
-            android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize\"
-            android:windowSoftInputMode=\"adjustResize\">
+            android:name=\\".MainActivity\\"
+            android:label=\\"@string/app_name\\"
+            android:configChanges=\\"keyboard|keyboardHidden|orientation|screenSize\\"
+            android:windowSoftInputMode=\\"adjustResize\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.MAIN\" />
-                <category android:name=\"android.intent.category.LAUNCHER\" />
+                <action android:name=\\"android.intent.action.MAIN\\" />
+                <category android:name=\\"android.intent.category.LAUNCHER\\" />
             </intent-filter>
         </activity>
-        <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
+        <activity android:name=\\"com.facebook.react.devsupport.DevSettingsActivity\\" />
     </application>
 </manifest>
 "
 `;
 
 exports[`postunlink android mount compiles 1`] = `
-"apply plugin: \"com.android.application\"
+"apply plugin: \\"com.android.application\\"
 
 import com.android.build.OutputFile
 
@@ -49,14 +51,14 @@ import com.android.build.OutputFile
  * cycle. By default, bundleDebugJsAndAssets is skipped, as in debug/dev mode we prefer to load the
  * bundle directly from the development server. Below you can see all the possible configurations
  * and their defaults. If you decide to add a configuration block, make sure to add it before the
- * \`apply from: \"../../node_modules/react-native/react.gradle\"\` line.
+ * \`apply from: \\"../../node_modules/react-native/react.gradle\\"\` line.
  *
  * project.ext.react = [
  *   // the name of the generated asset file containing your JS bundle
- *   bundleAssetName: \"index.android.bundle\",
+ *   bundleAssetName: \\"index.android.bundle\\",
  *
  *   // the entry file for bundle generation
- *   entryFile: \"index.android.js\",
+ *   entryFile: \\"index.android.js\\",
  *
  *   // whether to bundle JS and assets in debug mode
  *   bundleInDebug: false,
@@ -67,45 +69,45 @@ import com.android.build.OutputFile
  *   // whether to bundle JS and assets in another build variant (if configured).
  *   // See http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Build-Variants
  *   // The configuration property can be in the following formats
- *   //         \'bundleIn\${productFlavor}\${buildType}\'
- *   //         \'bundleIn\${buildType}\'
+ *   //         'bundleIn\${productFlavor}\${buildType}'
+ *   //         'bundleIn\${buildType}'
  *   // bundleInFreeDebug: true,
  *   // bundleInPaidRelease: true,
  *   // bundleInBeta: true,
  *
- *   // the root of your project, i.e. where \"package.json\" lives
- *   root: \"../../\",
+ *   // the root of your project, i.e. where \\"package.json\\" lives
+ *   root: \\"../../\\",
  *
  *   // where to put the JS bundle asset in debug mode
- *   jsBundleDirDebug: \"$buildDir/intermediates/assets/debug\",
+ *   jsBundleDirDebug: \\"$buildDir/intermediates/assets/debug\\",
  *
  *   // where to put the JS bundle asset in release mode
- *   jsBundleDirRelease: \"$buildDir/intermediates/assets/release\",
+ *   jsBundleDirRelease: \\"$buildDir/intermediates/assets/release\\",
  *
  *   // where to put drawable resources / React Native assets, e.g. the ones you use via
- *   // require(\'./image.png\')), in debug mode
- *   resourcesDirDebug: \"$buildDir/intermediates/res/merged/debug\",
+ *   // require('./image.png')), in debug mode
+ *   resourcesDirDebug: \\"$buildDir/intermediates/res/merged/debug\\",
  *
  *   // where to put drawable resources / React Native assets, e.g. the ones you use via
- *   // require(\'./image.png\')), in release mode
- *   resourcesDirRelease: \"$buildDir/intermediates/res/merged/release\",
+ *   // require('./image.png')), in release mode
+ *   resourcesDirRelease: \\"$buildDir/intermediates/res/merged/release\\",
  *
  *   // by default the gradle tasks are skipped if none of the JS files or assets change; this means
- *   // that we don\'t look at files in android/ or ios/ to determine whether the tasks are up to
+ *   // that we don't look at files in android/ or ios/ to determine whether the tasks are up to
  *   // date; if you have any other folders that you want to ignore for performance reasons (gradle
  *   // indexes the entire tree), add them here. Alternatively, if you have JS files in android/
  *   // for example, you might want to remove it from here.
- *   inputExcludes: [\"android/**\", \"ios/**\"],
+ *   inputExcludes: [\\"android/**\\", \\"ios/**\\"],
  *
  *   // override which node gets called and with what additional arguments
- *   nodeExecutableAndArgs: [\"node\"]
+ *   nodeExecutableAndArgs: [\\"node\\"]
  *
  *   // supply additional arguments to the packager
  *   extraPackagerArgs: []
  * ]
  */
 
-apply from: \"../../node_modules/react-native/react.gradle\"
+apply from: \\"../../node_modules/react-native/react.gradle\\"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -124,16 +126,16 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion \"23.0.1\"
+    buildToolsVersion \\"23.0.1\\"
 
     defaultConfig {
-        applicationId \"com.sample\"
+        applicationId \\"com.sample\\"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName \"1.0\"
+        versionName \\"1.0\\"
         ndk {
-            abiFilters \"armeabi-v7a\", \"x86\"
+            abiFilters \\"armeabi-v7a\\", \\"x86\\"
         }
     }
     splits {
@@ -141,13 +143,13 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include \"armeabi-v7a\", \"x86\"
+            include \\"armeabi-v7a\\", \\"x86\\"
         }
     }
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile(\"proguard-android.txt\"), \"proguard-rules.pro\"
+            proguardFiles getDefaultProguardFile(\\"proguard-android.txt\\"), \\"proguard-rules.pro\\"
         }
     }
     // applicationVariants are e.g. debug, release
@@ -155,7 +157,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = [\"armeabi-v7a\":1, \"x86\":2]
+            def versionCodes = [\\"armeabi-v7a\\":1, \\"x86\\":2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -166,56 +168,56 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: \"libs\", include: [\"*.jar\"])
-    compile \"com.android.support:appcompat-v7:23.0.1\"
-    compile \"com.facebook.react:react-native:+\"  // From node_modules
+    compile fileTree(dir: \\"libs\\", include: [\\"*.jar\\"])
+    compile \\"com.android.support:appcompat-v7:23.0.1\\"
+    compile \\"com.facebook.react:react-native:+\\"  // From node_modules
 }
 
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
-    into \'libs\'
+    into 'libs'
 }
 "
 `;
 
 exports[`postunlink android mount params 1`] = `
 "<manifest 
-    xmlns:android=\"http://schemas.android.com/apk/res/android\"
-    package=\"com.sample\"
-    android:versionCode=\"1\"
-    android:versionName=\"1.0\">
+    xmlns:android=\\"http://schemas.android.com/apk/res/android\\"
+    package=\\"com.sample\\"
+    android:versionCode=\\"1\\"
+    android:versionName=\\"1.0\\">
 
-    <uses-permission android:name=\"android.permission.INTERNET\" />
-    <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
+    <uses-permission android:name=\\"android.permission.INTERNET\\" />
+    <uses-permission android:name=\\"android.permission.SYSTEM_ALERT_WINDOW\\" />
 
     <uses-sdk
-        android:minSdkVersion=\"16\"
-        android:targetSdkVersion=\"22\" />
+        android:minSdkVersion=\\"16\\"
+        android:targetSdkVersion=\\"22\\" />
 
     <application
-        android:name=\".MainApplication\"
-        android:allowBackup=\"true\"
-        android:label=\"@string/app_name\"
-        android:icon=\"@mipmap/ic_launcher\"
-        android:theme=\"@style/AppTheme\">
+        android:name=\\".MainApplication\\"
+        android:allowBackup=\\"true\\"
+        android:label=\\"@string/app_name\\"
+        android:icon=\\"@mipmap/ic_launcher\\"
+        android:theme=\\"@style/AppTheme\\">
         <activity
-            android:name=\".MainActivity\"
-            android:label=\"@string/app_name\"
-            android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize\"
-            android:windowSoftInputMode=\"adjustResize\">
+            android:name=\\".MainActivity\\"
+            android:label=\\"@string/app_name\\"
+            android:configChanges=\\"keyboard|keyboardHidden|orientation|screenSize\\"
+            android:windowSoftInputMode=\\"adjustResize\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.MAIN\" />
-                <category android:name=\"android.intent.category.LAUNCHER\" />
+                <action android:name=\\"android.intent.action.MAIN\\" />
+                <category android:name=\\"android.intent.category.LAUNCHER\\" />
             </intent-filter>
         </activity>
-        <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
-        <activity android:name=\"com.facebook.AppActivity\">
+        <activity android:name=\\"com.facebook.react.devsupport.DevSettingsActivity\\" />
+        <activity android:name=\\"com.facebook.AppActivity\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.VIEW\" />
-                <category android:name=\"android.intent.category.BROWSABLE\" />
-                <data android:scheme=\"ak12345\" />
+                <action android:name=\\"android.intent.action.VIEW\\" />
+                <category android:name=\\"android.intent.category.BROWSABLE\\" />
+                <data android:scheme=\\"ak12345\\" />
             </intent-filter>
         </activity>
     </application>
@@ -225,42 +227,42 @@ exports[`postunlink android mount params 1`] = `
 
 exports[`postunlink android mount params when setup handler 1`] = `
 "<manifest 
-    xmlns:android=\"http://schemas.android.com/apk/res/android\"
-    package=\"com.sample\"
-    android:versionCode=\"1\"
-    android:versionName=\"1.0\">
+    xmlns:android=\\"http://schemas.android.com/apk/res/android\\"
+    package=\\"com.sample\\"
+    android:versionCode=\\"1\\"
+    android:versionName=\\"1.0\\">
     <meta-data
-        android:name=\"APP_KEY\"
-        android:value=\"594f5212-3d66-45d9-a992-ad94263cf318\" />
+        android:name=\\"APP_KEY\\"
+        android:value=\\"594f5212-3d66-45d9-a992-ad94263cf318\\" />
 
-    <uses-permission android:name=\"android.permission.INTERNET\" />
-    <uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />
+    <uses-permission android:name=\\"android.permission.INTERNET\\" />
+    <uses-permission android:name=\\"android.permission.SYSTEM_ALERT_WINDOW\\" />
 
     <uses-sdk
-        android:minSdkVersion=\"16\"
-        android:targetSdkVersion=\"22\" />
+        android:minSdkVersion=\\"16\\"
+        android:targetSdkVersion=\\"22\\" />
 
     <application
-        android:name=\".MainApplication\"
-        android:allowBackup=\"true\"
-        android:label=\"@string/app_name\"
-        android:icon=\"@mipmap/ic_launcher\"
-        android:theme=\"@style/AppTheme\">
+        android:name=\\".MainApplication\\"
+        android:allowBackup=\\"true\\"
+        android:label=\\"@string/app_name\\"
+        android:icon=\\"@mipmap/ic_launcher\\"
+        android:theme=\\"@style/AppTheme\\">
         <activity
-            android:name=\".MainActivity\"
-            android:label=\"@string/app_name\"
-            android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize\"
-            android:windowSoftInputMode=\"adjustResize\">
+            android:name=\\".MainActivity\\"
+            android:label=\\"@string/app_name\\"
+            android:configChanges=\\"keyboard|keyboardHidden|orientation|screenSize\\"
+            android:windowSoftInputMode=\\"adjustResize\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.MAIN\" />
-                <category android:name=\"android.intent.category.LAUNCHER\" />
+                <action android:name=\\"android.intent.action.MAIN\\" />
+                <category android:name=\\"android.intent.category.LAUNCHER\\" />
             </intent-filter>
         </activity>
-        <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
-        <activity android:name=\"com.facebook.AppActivity\">
+        <activity android:name=\\"com.facebook.react.devsupport.DevSettingsActivity\\" />
+        <activity android:name=\\"com.facebook.AppActivity\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.VIEW\" />
-                <category android:name=\"android.intent.category.BROWSABLE\" />
+                <action android:name=\\"android.intent.action.VIEW\\" />
+                <category android:name=\\"android.intent.category.BROWSABLE\\" />
             </intent-filter>
         </activity>
     </application>
@@ -270,42 +272,42 @@ exports[`postunlink android mount params when setup handler 1`] = `
 
 exports[`postunlink android mount permissions 1`] = `
 "<manifest 
-    xmlns:android=\"http://schemas.android.com/apk/res/android\"
-    package=\"com.sample\"
-    android:versionCode=\"1\"
-    android:versionName=\"1.0\">
+    xmlns:android=\\"http://schemas.android.com/apk/res/android\\"
+    package=\\"com.sample\\"
+    android:versionCode=\\"1\\"
+    android:versionName=\\"1.0\\">
     <meta-data
-        android:name=\"APP_KEY\"
-        android:value=\"594f5212-3d66-45d9-a992-ad94263cf318\" />
+        android:name=\\"APP_KEY\\"
+        android:value=\\"594f5212-3d66-45d9-a992-ad94263cf318\\" />
 
-    <uses-permission android:name=\"android.permission.INTERNET\" />
+    <uses-permission android:name=\\"android.permission.INTERNET\\" />
 
     <uses-sdk
-        android:minSdkVersion=\"16\"
-        android:targetSdkVersion=\"22\" />
+        android:minSdkVersion=\\"16\\"
+        android:targetSdkVersion=\\"22\\" />
 
     <application
-        android:name=\".MainApplication\"
-        android:allowBackup=\"true\"
-        android:label=\"@string/app_name\"
-        android:icon=\"@mipmap/ic_launcher\"
-        android:theme=\"@style/AppTheme\">
+        android:name=\\".MainApplication\\"
+        android:allowBackup=\\"true\\"
+        android:label=\\"@string/app_name\\"
+        android:icon=\\"@mipmap/ic_launcher\\"
+        android:theme=\\"@style/AppTheme\\">
         <activity
-            android:name=\".MainActivity\"
-            android:label=\"@string/app_name\"
-            android:configChanges=\"keyboard|keyboardHidden|orientation|screenSize\"
-            android:windowSoftInputMode=\"adjustResize\">
+            android:name=\\".MainActivity\\"
+            android:label=\\"@string/app_name\\"
+            android:configChanges=\\"keyboard|keyboardHidden|orientation|screenSize\\"
+            android:windowSoftInputMode=\\"adjustResize\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.MAIN\" />
-                <category android:name=\"android.intent.category.LAUNCHER\" />
+                <action android:name=\\"android.intent.action.MAIN\\" />
+                <category android:name=\\"android.intent.category.LAUNCHER\\" />
             </intent-filter>
         </activity>
-        <activity android:name=\"com.facebook.react.devsupport.DevSettingsActivity\" />
-        <activity android:name=\"com.facebook.AppActivity\">
+        <activity android:name=\\"com.facebook.react.devsupport.DevSettingsActivity\\" />
+        <activity android:name=\\"com.facebook.AppActivity\\">
             <intent-filter>
-                <action android:name=\"android.intent.action.VIEW\" />
-                <category android:name=\"android.intent.category.BROWSABLE\" />
-                <data android:scheme=\"ak12345\" />
+                <action android:name=\\"android.intent.action.VIEW\\" />
+                <category android:name=\\"android.intent.category.BROWSABLE\\" />
+                <data android:scheme=\\"ak12345\\" />
             </intent-filter>
         </activity>
     </application>

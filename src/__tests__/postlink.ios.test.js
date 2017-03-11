@@ -1,18 +1,14 @@
 
-const xcode = require('xcode');
-
-const generateUuid = jest.fn();
-xcode.project.prototype.generateUuid = generateUuid;
-
 jest.mock('inquirer');
-jest.mock('xcode', () => xcode);
 
 const _ = require('lodash');
+const xcode = require('xcode');
 const glob = require('glob');
 const inquirer = require('inquirer');
 const postlink = require('../postlink.ios');
 
 const option = { ignore: ['node_modules/**', '**/build/**', 'unlink_sample/**'], realpath: true };
+const generateUuid = xcode.project.prototype.generateUuid;
 
 describe('postlink ios', () => {
   it('mount framework', () => {
