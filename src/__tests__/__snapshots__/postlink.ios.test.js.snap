@@ -1339,6 +1339,7 @@ exports[`postlink ios mount params 1`] = `
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
     <key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSExceptionDomains</key>
@@ -1396,6 +1397,7 @@ exports[`postlink ios mount params when setup handler 1`] = `
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
     <key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSExceptionDomains</key>

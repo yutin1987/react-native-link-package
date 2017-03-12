@@ -72,6 +72,8 @@ module.exports = function postlink(pbxprojPath, config) {
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),
       plistPath,
-      plist: plistParser.build(plist),
+      plist: plistParser
+        .build(plist)
+        .replace(/key>(\n *)<key/, (match, value) => `key>${value}<string></string>${value}<key`),
     }));
 };
