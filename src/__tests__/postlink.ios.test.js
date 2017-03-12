@@ -56,9 +56,9 @@ describe('postlink ios', () => {
       params: [{
         name: 'APP_KEY',
         message: 'What\'s your app key ?',
-        handler: (plist, answer) => {
+        handler: (plist, input) => {
           const CFBundleURLSchemes = _.get(plist, 'CFBundleURLTypes[0].CFBundleURLSchemes', []);
-          CFBundleURLSchemes.push(`ak${answer.value || 'APP_KEY in here'}`);
+          CFBundleURLSchemes.push(`ak${input || 'APP_KEY in here'}`);
           _.set(plist, 'CFBundleURLTypes[0].CFBundleURLSchemes', CFBundleURLSchemes);
         },
       }],

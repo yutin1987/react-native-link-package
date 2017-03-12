@@ -67,18 +67,24 @@ function mountActivities(manifest, config) {
 }
 
 function mountParams(manifest, params) {
-  const param = _.pullAt(params, 0)[0];
-  const { name, message } = param;
+  const data = _.pullAt(params, 0)[0];
+  const param = _.assign({}, data, data.android);
 
-  return inquirer
-    .prompt({
-      type: 'input',
-      name: 'value',
-      message,
+  return Promise.resolve()
+    .then(() => {
+      if (param.value) return param.value;
+
+      return inquirer.prompt({
+        type: 'input',
+        name: 'value',
+        message: param.message,
+      }).then(answer => answer.value);
     })
-    .then((answer) => {
-      const handler = _.find(['linkAndroid', 'handlerAndroid', 'link', 'handler'], value => _.has(param, value));
-      if (handler) return param[handler](manifest, answer);
+    .then((value) => {
+      const { name } = param;
+
+      const handler = param.link || param.handler;
+      if (handler) return handler(manifest, value);
 
       const dupe = _.find(manifest('meta-data'), { attribs: { 'android:name': name } });
 
@@ -89,12 +95,13 @@ function mountParams(manifest, params) {
       return manifest('manifest')
         .prepend(manifest('<meta-data>')
         .attr('android:name', name)
-        .attr('android:value', answer.value || `${name}-in-here`));
+        .attr('android:value', value || `${name}-in-here`));
     })
     .then(() => (params.length ? mountParams(manifest, params) : false));
 }
 
-module.exports = function postlink(manifestPath, config) {
+module.exports = function postlink(manifestPath, data) {
+  const configs = _.assign({}, data, data.android);
   const manifest = cheerio.load(fs.readFileSync(manifestPath, 'utf8'), { xmlMode: true });
   const gradlePath = path.join(path.dirname(manifestPath), '../../build.gradle');
   const gradle = {
@@ -103,10 +110,10 @@ module.exports = function postlink(manifestPath, config) {
   };
 
   return Promise.resolve()
-    .then(() => (config.compiles ? mountCompiles(gradle, config) : false))
-    .then(() => (config.permissions ? mountPermissions(manifest, config) : false))
-    .then(() => (config.activities ? mountActivities(manifest, config) : false))
-    .then(() => (config.params ? mountParams(manifest, _.clone(config.params)) : false))
+    .then(() => (configs.compiles ? mountCompiles(gradle, configs) : false))
+    .then(() => (configs.permissions ? mountPermissions(manifest, configs) : false))
+    .then(() => (configs.activities ? mountActivities(manifest, configs) : false))
+    .then(() => (configs.params ? mountParams(manifest, _.clone(configs.params)) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),

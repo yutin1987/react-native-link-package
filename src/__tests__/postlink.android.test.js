@@ -79,8 +79,8 @@ describe('postlink android', () => {
       params: [{
         name: 'APP_KEY',
         message: 'What\'s your app key ?',
-        handler: (manifest, answer) => {
-          const elem = manifest('<data>').attr('android:scheme', `ak${answer.value}`);
+        handler: (manifest, input) => {
+          const elem = manifest('<data>').attr('android:scheme', `ak${input}`);
           manifest('application activity').eq(0).find('intent-filter').append(elem);
         },
       }],

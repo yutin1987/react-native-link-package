@@ -8,19 +8,12 @@ function mountFrameworks(project, config) {
   const { packageName, framework } = config;
 
   const frameworkPath = `../node_modules/${packageName}/${framework.path}`.replace(/\/+$/i, '');
-  const mainGroup = project.getFirstProject().firstProject.mainGroup;
-  if (!project.pbxGroupByName('Frameworks')) {
-    const uuid = project.pbxCreateGroup('Frameworks', '""');
-    project.getPBXGroupByKey(mainGroup).children.push({
-      value: uuid, comment: 'Frameworks',
-    });
-  }
 
   _.forEach(framework.files, (file) => {
     project.removeFramework(`${frameworkPath}/${file}`, { customFramework: true });
   });
 
-  _.forEach(
+  return _.forEach(
     _.filter(project.pbxXCBuildConfigurationSection(), (obj, key) => key.indexOf('_comment') === -1),
     ({ buildSettings }) => {
       if (buildSettings.PRODUCT_NAME) {
@@ -33,7 +26,8 @@ function mountFrameworks(project, config) {
 }
 
 function mountParams(plist, params) {
-  _.forEach(params, (param) => {
+  _.forEach(params, (data) => {
+    const param = _.assign({}, data, data.ios);
     const { name } = param;
 
     const handler = _.find(['unlinkIos', 'handlerIos', 'unlink', 'handler'], value => _.has(param, value));
@@ -43,15 +37,16 @@ function mountParams(plist, params) {
   });
 }
 
-module.exports = function postlink(pbxprojPath, config) {
+module.exports = function postlink(pbxprojPath, data) {
+  const configs = _.assign({}, data, data.ios);
   const pbxproj = xcode.project(pbxprojPath).parseSync();
   const targetName = pbxproj.getFirstTarget().firstTarget.name;
   const plistPath = path.join(path.dirname(pbxprojPath), `../${targetName}/Info.plist`);
   const plist = plistParser.parse(fs.readFileSync(plistPath, 'utf8'));
 
   return Promise.resolve()
-    .then(() => (config.framework ? mountFrameworks(pbxproj, config) : false))
-    .then(() => (config.params ? mountParams(plist, _.clone(config.params)) : false))
+    .then(() => (configs.framework ? mountFrameworks(pbxproj, configs) : false))
+    .then(() => (configs.params ? mountParams(plist, _.clone(configs.params)) : false))
     .then(() => ({
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),

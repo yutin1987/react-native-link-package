@@ -27,7 +27,8 @@ function mountActivities(manifest, config) {
 
 function mountParams(manifest, params) {
   const meta = manifest('meta-data');
-  _.forEach(params, (param) => {
+  _.forEach(params, (data) => {
+    const param = _.assign({}, data, data.ios);
     const { name } = param;
 
     const handler = _.find(['unlinkAndroid', 'handlerAndroid', 'unlink', 'handler'], value => _.has(param, value));
@@ -39,7 +40,8 @@ function mountParams(manifest, params) {
   });
 }
 
-module.exports = function postlink(manifestPath, config) {
+module.exports = function postlink(manifestPath, data) {
+  const configs = _.assign({}, data, data.android);
   const manifest = cheerio.load(fs.readFileSync(manifestPath, 'utf8'), { xmlMode: true });
   const gradlePath = path.join(path.dirname(manifestPath), '../../build.gradle');
   const gradle = {
@@ -48,10 +50,10 @@ module.exports = function postlink(manifestPath, config) {
   };
 
   return Promise.resolve()
-    .then(() => (config.compiles ? mountCompiles(gradle, config) : false))
-    .then(() => (config.permissions ? mountPermissions(manifest, config) : false))
-    .then(() => (config.activities ? mountActivities(manifest, config) : false))
-    .then(() => (config.params ? mountParams(manifest, _.clone(config.params)) : false))
+    .then(() => (configs.compiles ? mountCompiles(gradle, configs) : false))
+    .then(() => (configs.permissions ? mountPermissions(manifest, configs) : false))
+    .then(() => (configs.activities ? mountActivities(manifest, configs) : false))
+    .then(() => (configs.params ? mountParams(manifest, _.clone(configs.params)) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),

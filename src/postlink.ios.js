@@ -37,37 +37,44 @@ function mountFrameworks(project, config) {
 }
 
 function mountParams(plist, params) {
-  const param = _.pullAt(params, 0)[0];
-  const { name, message } = param;
+  const data = _.pullAt(params, 0)[0];
+  const param = _.assign({}, data, data.ios);
 
-  return inquirer
-    .prompt({
-      type: 'input',
-      name: 'value',
-      message,
+  return Promise.resolve()
+    .then(() => {
+      if (param.value) return param.value;
+
+      return inquirer.prompt({
+        type: 'input',
+        name: 'value',
+        message: param.message,
+      }).then(answer => answer.value);
     })
-    .then((answer) => {
-      const handler = _.find(['linkIos', 'handlerIos', 'link', 'handler'], value => _.has(param, value));
-      if (handler) return param[handler](plist, answer);
+    .then((value) => {
+      const { name } = param;
+
+      const handler = param.link || param.handler;
+      if (handler) return handler(plist, value);
 
       if (plist[name]) {
         return console.log(`"${name}" already specified in the plist file.`);
       }
 
-      return _.set(plist, name, answer.value || `${name} in here`);
+      return _.set(plist, name, value || `${name} in here`);
     })
     .then(() => (params.length ? mountParams(plist, params) : false));
 }
 
-module.exports = function postlink(pbxprojPath, config) {
+module.exports = function postlink(pbxprojPath, data) {
+  const configs = _.assign({}, data, data.ios);
   const pbxproj = xcode.project(pbxprojPath).parseSync();
   const targetName = pbxproj.getFirstTarget().firstTarget.name;
   const plistPath = path.join(path.dirname(pbxprojPath), `../${targetName}/Info.plist`);
   const plist = plistParser.parse(fs.readFileSync(plistPath, 'utf8'));
 
   return Promise.resolve()
-    .then(() => (config.framework ? mountFrameworks(pbxproj, config) : false))
-    .then(() => (config.params ? mountParams(plist, _.clone(config.params)) : false))
+    .then(() => (configs.framework ? mountFrameworks(pbxproj, configs) : false))
+    .then(() => (configs.params ? mountParams(plist, _.assign(configs.params, _.get(configs.params, 'ios', {}))) : false))
     .then(() => ({
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),
