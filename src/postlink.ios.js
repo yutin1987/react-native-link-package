@@ -17,8 +17,10 @@ function mountFrameworks(project, config) {
     });
   }
 
+  const target = project.getFirstTarget().uuid;
+
   _.forEach(framework.files, (file) => {
-    project.addFramework(`${frameworkPath}/${file}`, { customFramework: true });
+    project.addFramework(`${frameworkPath}/${file}`, { target, customFramework: true });
   });
 
   const INHERITED = '"$(inherited)"';
@@ -34,6 +36,25 @@ function mountFrameworks(project, config) {
         _.set(buildSettings, 'FRAMEWORK_SEARCH_PATHS', _.uniq(searchPaths));
       }
     });
+}
+
+function mountResources(project, config) {
+  const { packageName, resource } = config;
+
+  const resourcePath = `../node_modules/${packageName}/${resource.path}`.replace(/\/+$/i, '');
+  const mainGroup = project.getFirstProject().firstProject.mainGroup;
+  if (!project.pbxGroupByName('Resources')) {
+    const uuid = project.pbxCreateGroup('Resources', '""');
+    project.getPBXGroupByKey(mainGroup).children.push({
+      value: uuid, comment: 'Resources',
+    });
+  }
+
+  const target = project.getFirstTarget().uuid;
+
+  _.forEach(resource.files, (file) => {
+    project.addResourceFile(`${resourcePath}/${file}`, { target });
+  });
 }
 
 function mountParams(plist, params) {
@@ -74,6 +95,7 @@ module.exports = function postlink(pbxprojPath, data) {
 
   return Promise.resolve()
     .then(() => (configs.framework ? mountFrameworks(pbxproj, configs) : false))
+    .then(() => (configs.resource ? mountResources(pbxproj, configs) : false))
     .then(() => (configs.params ? mountParams(plist, _.assign(configs.params, _.get(configs.params, 'ios', {}))) : false))
     .then(() => ({
       pbxprojPath,

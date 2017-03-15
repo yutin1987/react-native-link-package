@@ -6,24 +6,36 @@ const postunlink = require('../postunlink.ios');
 const path = 'unlink_sample/ios/sample.xcodeproj/project.pbxproj';
 
 describe('postunlink ios', () => {
-  it('mount framework', () => (
+  it('unmount framework', () => (
     postunlink(path, {
       packageName: 'rn-package',
       framework: {
         path: 'ios/Frameworks/',
-        files: ['appkey.framework', 'appkey.bundle'],
+        files: ['appkey.framework'],
       },
     })
     .then((result) => {
       expect(result.pbxproj).toMatchSnapshot();
-      expect(result.pbxproj).not.toContain('../node_modules/rn-package/ios/Frameworks/appkey.framework');
-      expect(result.pbxproj).not.toContain('appkey.bundle');
-      expect(result.pbxproj).not.toContain('appkey.framework in Frameworks');
+      expect(result.pbxproj).not.toContain('appkey.framework');
       expect(result.pbxproj).not.toContain('\\"../node_modules/rn-package/ios/Frameworks\\"');
     })
   ));
 
-  it('mount params', () => (
+  it('unmount resource', () => (
+    postunlink(path, {
+      packageName: 'rn-package',
+      resource: {
+        path: 'ios/Resources/',
+        files: ['AccountKitStrings.bundle'],
+      },
+    })
+    .then((result) => {
+      expect(result.pbxproj).toMatchSnapshot();
+      expect(result.pbxproj).not.toContain('AccountKitStrings.bundle');
+    })
+  ));
+
+  it('unmount params', () => (
     postunlink(path, {
       packageName: 'rn-package',
       params: [{
@@ -37,7 +49,7 @@ describe('postunlink ios', () => {
     })
   ));
 
-  it('mount params when setup handler', () => (
+  it('unmount params when setup handler', () => (
     postunlink(path, {
       packageName: 'rn-package',
       params: [{

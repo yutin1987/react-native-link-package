@@ -11,9 +11,11 @@ const path = 'link_sample/ios/sample.xcodeproj/project.pbxproj';
 
 describe('postlink ios', () => {
   it('mount framework', () => {
+    generateUuid.mockReset();
     generateUuid.mockReturnValueOnce('E77F019A5F934FC8BADCD2DA');
     generateUuid.mockReturnValueOnce('7EC55606029D4633B56B87AB');
-    generateUuid.mockReturnValueOnce('E733E413F91D4CBDB8C24C76');
+    generateUuid.mockReturnValueOnce('7EC55606030D4633B56B87AB');
+    generateUuid.mockReturnValueOnce('7EC55606031D4633B56B87AB');
     return postlink(path, {
       packageName: 'rn-package',
       framework: {
@@ -23,9 +25,28 @@ describe('postlink ios', () => {
     })
     .then((result) => {
       expect(result.pbxproj).toMatchSnapshot();
-      expect(result.pbxproj).toContain('../node_modules/rn-package/ios/Frameworks/appkey.framework');
-      expect(result.pbxproj).toContain('appkey.framework in Frameworks');
+      expect(result.pbxproj).toContain('appkey.framework');
       expect(result.pbxproj).toContain('\\"../node_modules/rn-package/ios/Frameworks\\"');
+    });
+  });
+
+  it('mount resource', () => {
+    generateUuid.mockReset();
+    generateUuid.mockReturnValueOnce('E77F019A5F934FC8BADCD2DA');
+    generateUuid.mockReturnValueOnce('7EC55606029D4633B56B87AB');
+    generateUuid.mockReturnValueOnce('7EC55606030D4633B56B87AB');
+    generateUuid.mockReturnValueOnce('7EC55606031D4633B56B87AB');
+    return postlink(path, {
+      packageName: 'rn-package',
+      resource: {
+        path: 'ios/Resources/',
+        files: ['AccountKitStrings.bundle'],
+      },
+    })
+    .then((result) => {
+      expect(result.pbxproj).toMatchSnapshot();
+      expect(result.pbxproj).toContain('../node_modules/rn-package/ios/Resources/AccountKitStrings.bundle');
+      expect(result.pbxproj).toContain('AccountKitStrings.bundle in Resources');
     });
   });
 

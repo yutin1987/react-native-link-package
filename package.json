@@ -1,6 +1,6 @@
 {
   "name": "react-native-link-package",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "description": "easy to link/unlink your package",
   "main": "index.js",
   "engines": {

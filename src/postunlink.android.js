@@ -4,20 +4,20 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const pretty = require('android-pretty-manifest');
 
-function mountCompiles(gradle, config) {
+function unmountCompiles(gradle, config) {
   return _.forEach(config.compiles, (item) => {
     gradle.replace(new RegExp(` *compile "${item}" *\n`, 'i'), '');
   });
 }
 
-function mountPermissions(manifest, config) {
+function unmountPermissions(manifest, config) {
   _.forEach(config.permissions, (name) => {
     const dupe = _.find(manifest('uses-permission'), { attribs: { 'android:name': `android.permission.${name}` } });
     if (dupe) manifest(dupe).remove();
   });
 }
 
-function mountActivities(manifest, config) {
+function unmountActivities(manifest, config) {
   _.forEach(config.activities, (obj, name) => {
     const application = manifest('application');
     const dupe = _.find(application.find('activity'), { attribs: { 'android:name': name } });
@@ -25,7 +25,7 @@ function mountActivities(manifest, config) {
   });
 }
 
-function mountParams(manifest, params) {
+function unmountParams(manifest, params) {
   const meta = manifest('meta-data');
   _.forEach(params, (data) => {
     const param = _.assign({}, data, data.ios);
@@ -50,10 +50,10 @@ module.exports = function postlink(manifestPath, data) {
   };
 
   return Promise.resolve()
-    .then(() => (configs.compiles ? mountCompiles(gradle, configs) : false))
-    .then(() => (configs.permissions ? mountPermissions(manifest, configs) : false))
-    .then(() => (configs.activities ? mountActivities(manifest, configs) : false))
-    .then(() => (configs.params ? mountParams(manifest, _.clone(configs.params)) : false))
+    .then(() => (configs.compiles ? unmountCompiles(gradle, configs) : false))
+    .then(() => (configs.permissions ? unmountPermissions(manifest, configs) : false))
+    .then(() => (configs.activities ? unmountActivities(manifest, configs) : false))
+    .then(() => (configs.params ? unmountParams(manifest, _.clone(configs.params)) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),
