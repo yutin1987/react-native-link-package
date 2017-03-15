@@ -92,7 +92,7 @@ function mountParams(manifest, params) {
         return console.log(`"${name}" already specified in the AndroidManifest.xml file.`);
       }
 
-      return manifest('manifest')
+      return manifest('application')
         .prepend(manifest('<meta-data>')
         .attr('android:name', name)
         .attr('android:value', value || `${name}-in-here`));
