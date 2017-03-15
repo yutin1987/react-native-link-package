@@ -1,6 +1,6 @@
 # react-native-link-package
 
-When you need to do a custom package for react-native, and you have some advanced settings on native as add framework into ios, you will like it.
+When you are building custom npm module for react-native and you have to add advanced settings on the native side, such as adding frameworks for iOS, you will like it.
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![NPM version](https://img.shields.io/npm/v/react-native-link-package.svg?style=flat-square)](https://www.npmjs.com/package/react-native-link-package)
@@ -12,7 +12,7 @@ When you need to do a custom package for react-native, and you have some advance
 
 # user guide
 
-## step 1: setup commands into package.json
+## step 1: add commands in package.json
 
 ex: [package.json](https://github.com/yutin1987/react-native-bridge-firebase/blob/master/package.json#L22)
 
@@ -25,7 +25,7 @@ ex: [package.json](https://github.com/yutin1987/react-native-bridge-firebase/blo
   }
 ```
 
-## stup 2: call react-native-link-package and setup configs
+## stup 2: invoke react-native-link-package and setup configs
 
 `postlink.js` or `postunlink.js`
 
