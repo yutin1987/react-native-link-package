@@ -114,7 +114,7 @@ module.exports = function postlink(manifestPath, data) {
     .then(() => (configs.compiles ? mountCompiles(gradle, configs) : false))
     .then(() => (configs.permissions ? mountPermissions(manifest, configs) : false))
     .then(() => (configs.activities ? mountActivities(manifest, configs) : false))
-    .then(() => (configs.params ? mountParams(manifest, _.concat(_.get(configs, 'params', []), _.get(configs, 'android.params', []))) : false))
+    .then(() => (configs.params ? mountParams(manifest, _.concat(_.get(data, 'params', []), _.get(data, 'android.params', []))) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),

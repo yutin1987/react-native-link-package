@@ -92,7 +92,7 @@ module.exports = function postlink(pbxprojPath, data) {
   return Promise.resolve()
     .then(() => (configs.framework ? mountFrameworks(pbxproj, configs) : false))
     .then(() => (configs.resource ? mountResources(pbxproj, configs) : false))
-    .then(() => (configs.params ? mountParams(plist, _.concat(_.get(configs, 'params', []), _.get(configs, 'ios.params', []))) : false))
+    .then(() => (configs.params ? mountParams(plist, _.concat(_.get(data, 'params', []), _.get(data, 'ios.params', []))) : false))
     .then(() => ({
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),
