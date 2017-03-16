@@ -34,6 +34,11 @@ function mountActivities(manifest, config) {
       activity = manifest('<activity>').attr('android:name', name);
       application.append(activity);
     }
+
+    _.forEach(_.omit(obj, ['action', 'category']), (value, key) => {
+      activity.attr(`android:${key}`, value);
+    });
+
     if (obj.action || obj.category) {
       let intent = activity.find('intent-filter');
       if (!intent.length) {
