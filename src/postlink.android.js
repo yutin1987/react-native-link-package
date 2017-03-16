@@ -84,10 +84,10 @@ function mountParams(manifest, params) {
     .then((value) => {
       const { name } = param;
 
+      data.value = value;
+
       const handler = param.link || param.handler;
       if (handler) return handler(manifest, value);
-
-      data.value = value;
 
       if (dupe) {
         return manifest(dupe).attr('android:value', value || `${name}`);

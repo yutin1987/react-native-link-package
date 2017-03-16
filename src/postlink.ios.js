@@ -72,10 +72,10 @@ function mountParams(plist, params) {
     .then((value) => {
       const { name } = param;
 
+      data.value = value;
+
       const handler = param.link || param.handler;
       if (handler) return handler(plist, value);
-
-      data.value = value;
 
       return _.set(plist, name, value || `${name}`);
     })
