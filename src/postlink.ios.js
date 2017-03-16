@@ -75,7 +75,7 @@ function mountParams(plist, params) {
       const handler = param.link || param.handler;
       if (handler) return handler(plist, value);
 
-      param.value = value;
+      data.value = value;
 
       return _.set(plist, name, value || `${name}`);
     })
@@ -92,7 +92,7 @@ module.exports = function postlink(pbxprojPath, data) {
   return Promise.resolve()
     .then(() => (configs.framework ? mountFrameworks(pbxproj, configs) : false))
     .then(() => (configs.resource ? mountResources(pbxproj, configs) : false))
-    .then(() => (configs.params ? mountParams(plist, _.assign(configs.params, _.get(configs.params, 'ios', {}))) : false))
+    .then(() => (configs.params ? mountParams(plist, _.concat(_.get(configs, 'params', []), _.get(configs, 'ios.params', []))) : false))
     .then(() => ({
       pbxprojPath,
       pbxproj: pbxproj.writeSync(),

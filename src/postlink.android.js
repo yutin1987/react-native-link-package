@@ -87,7 +87,7 @@ function mountParams(manifest, params) {
       const handler = param.link || param.handler;
       if (handler) return handler(manifest, value);
 
-      param.value = value;
+      data.value = value;
 
       if (dupe) {
         return manifest(dupe).attr('android:value', value || `${name}`);
@@ -114,7 +114,7 @@ module.exports = function postlink(manifestPath, data) {
     .then(() => (configs.compiles ? mountCompiles(gradle, configs) : false))
     .then(() => (configs.permissions ? mountPermissions(manifest, configs) : false))
     .then(() => (configs.activities ? mountActivities(manifest, configs) : false))
-    .then(() => (configs.params ? mountParams(manifest, _.clone(configs.params)) : false))
+    .then(() => (configs.params ? mountParams(manifest, _.concat(_.get(configs, 'params', []), _.get(configs, 'android.params', []))) : false))
     .then(() => ({
       manifestPath,
       manifest: pretty(manifest.xml()),
