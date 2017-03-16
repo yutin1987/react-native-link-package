@@ -70,32 +70,33 @@ function mountParams(manifest, params) {
   const data = _.pullAt(params, 0)[0];
   const param = _.assign({}, data, data.android);
 
-  return Promise.resolve()
-    .then(() => {
-      if (param.value) return param.value;
+  const dupe = _.find(manifest('meta-data'), { attribs: { 'android:name': param.name } });
+  const meta = _.get(dupe, 'attribs.android:value', '');
 
-      return inquirer.prompt({
-        type: 'input',
-        name: 'value',
-        message: param.message,
-      }).then(answer => answer.value);
-    })
+  return Promise.resolve()
+    .then(() => (param.value || meta))
+    .then(def => (inquirer.prompt({
+      type: 'input',
+      name: 'value',
+      message: `${param.message}${def ? ` (${def})` : ''}`,
+    })))
+    .then(answer => (answer.value || param.value || meta))
     .then((value) => {
       const { name } = param;
 
       const handler = param.link || param.handler;
       if (handler) return handler(manifest, value);
 
-      const dupe = _.find(manifest('meta-data'), { attribs: { 'android:name': name } });
+      param.value = value;
 
       if (dupe) {
-        return console.log(`"${name}" already specified in the AndroidManifest.xml file.`);
+        return manifest(dupe).attr('android:value', value || `${name}`);
       }
 
       return manifest('application')
         .prepend(manifest('<meta-data>')
         .attr('android:name', name)
-        .attr('android:value', value || `${name}-in-here`));
+        .attr('android:value', value || `${name}`));
     })
     .then(() => (params.length ? mountParams(manifest, params) : false));
 }

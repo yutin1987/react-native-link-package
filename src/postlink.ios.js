@@ -62,26 +62,22 @@ function mountParams(plist, params) {
   const param = _.assign({}, data, data.ios);
 
   return Promise.resolve()
-    .then(() => {
-      if (param.value) return param.value;
-
-      return inquirer.prompt({
-        type: 'input',
-        name: 'value',
-        message: param.message,
-      }).then(answer => answer.value);
-    })
+    .then(() => (param.value || plist[param.name]))
+    .then(def => (inquirer.prompt({
+      type: 'input',
+      name: 'value',
+      message: `${param.message}${def ? ` (${def})` : ''}`,
+    })))
+    .then(answer => (answer.value || param.value || plist[param.name]))
     .then((value) => {
       const { name } = param;
 
       const handler = param.link || param.handler;
       if (handler) return handler(plist, value);
 
-      if (plist[name]) {
-        return console.log(`"${name}" already specified in the plist file.`);
-      }
+      param.value = value;
 
-      return _.set(plist, name, value || `${name} in here`);
+      return _.set(plist, name, value || `${name}`);
     })
     .then(() => (params.length ? mountParams(plist, params) : false));
 }

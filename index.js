@@ -37,29 +37,9 @@ const option = { ignore: ['node_modules/**', '**/build/**'], realpath: true };
 //   }
 // }
 
-function assignParamValue(params) {
-  const param = _.pullAt(params, 0)[0];
-
-  return Promise.resolve()
-    .then(() => {
-      if (param.value) return param.value;
-
-      return inquirer.prompt({
-        type: 'input',
-        name: 'value',
-        message: param.message,
-      }).then((answer) => { _.set(param, 'value', answer.value); });
-    })
-    .then(() => (params.length ? assignParamValue(params) : false));
-}
-
 module.exports = {
   link: configs => (Promise
     .resolve()
-    .then(() => {
-      if (configs.params) return assignParamValue(_.clone(configs.params));
-      return false;
-    })
     .then(() => postlinkAndroid(glob.sync('**/AndroidManifest.xml', option)[0], configs))
     .then(({ manifestPath, manifest, gradlePath, gradle }) => {
       fs.writeFileSync(manifestPath, manifest);
